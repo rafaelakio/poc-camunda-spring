@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  id="Definitions_1" 
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  
+  <bpmn:process id="currency-process-embedded" name="Currency Process Embedded" isExecutable="true">
+    
+    <!-- Start Event -->
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    
+    <!-- Service Task: Get Currency -->
+    <bpmn:serviceTask id="Activity_GetCurrency" 
+                      name="Get USD-BRL Currency" 
+                      camunda:delegateExpression="${getCurrencyDelegate}">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    
+    <!-- Service Task: Process Quote (Spring Bean) -->
+    <bpmn:serviceTask id="Activity_ProcessQuote" 
+                      name="Process Quote Data" 
+                      camunda:expression="${currencyProcessingService.processQuote(execution)}">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    
+    <!-- Service Task: Calculate Difference (Java Class) -->
+    <bpmn:serviceTask id="Activity_CalculateDifference" 
+                      name="Calculate High-Low Difference" 
+                      camunda:class="com.example.camunda.embedded.javaclass.CalculateDifferenceTask">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    
+    <!-- Service Task: Validate Quote (Spring Bean) -->
+    <bpmn:serviceTask id="Activity_ValidateQuote" 
+                      name="Validate Quote" 
+                      camunda:expression="${currencyProcessingService.validateQuote(execution)}">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    
+    <!-- User Task: Review Currency -->
+    <bpmn:userTask id="Activity_ReviewCurrency" 
+                   name="Review Currency Value"
+                   camunda:assignee="demo">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:userTask>
+    
+    <!-- End Event -->
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+    </bpmn:endEvent>
+    
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_GetCurrency" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_GetCurrency" targetRef="Activity_ProcessQuote" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Activity_ProcessQuote" targetRef="Activity_CalculateDifference" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Activity_CalculateDifference" targetRef="Activity_ValidateQuote" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Activity_ValidateQuote" targetRef="Activity_ReviewCurrency" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Activity_ReviewCurrency" targetRef="EndEvent_1" />
+    
+  </bpmn:process>
+  
+  <!-- Diagram Information -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="currency-process-embedded">
+      
+      <!-- Start Event Shape -->
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="142" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      
+      <!-- Service Task Shape -->
+      <bpmndi:BPMNShape id="Activity_GetCurrency_di" bpmnElement="Activity_GetCurrency">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      
+      <!-- Service Task: Process Quote Shape -->
+      <bpmndi:BPMNShape id="Activity_ProcessQuote_di" bpmnElement="Activity_ProcessQuote">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      
+      <!-- Service Task: Calculate Difference Shape -->
+      <bpmndi:BPMNShape id="Activity_CalculateDifference_di" bpmnElement="Activity_CalculateDifference">
+        <dc:Bounds x="590" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      
+      <!-- Service Task: Validate Quote Shape -->
+      <bpmndi:BPMNShape id="Activity_ValidateQuote_di" bpmnElement="Activity_ValidateQuote">
+        <dc:Bounds x="750" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      
+      <!-- User Task Shape -->
+      <bpmndi:BPMNShape id="Activity_ReviewCurrency_di" bpmnElement="Activity_ReviewCurrency">
+        <dc:Bounds x="910" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      
+      <!-- End Event Shape -->
+      <bpmndi:BPMNShape id="Event_EndEvent_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1072" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1080" y="142" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      
+      <!-- Flow 1 Edge -->
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Flow 2 Edge -->
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Flow 3 Edge -->
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Flow 4 Edge -->
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="750" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Flow 5 Edge -->
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="850" y="117" />
+        <di:waypoint x="910" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Flow 6 Edge -->
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1010" y="117" />
+        <di:waypoint x="1072" y="117" />
+      </bpmndi:BPMNEdge>
+      
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  
+</bpmn:definitions>

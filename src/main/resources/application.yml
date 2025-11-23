@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: poc-camunda-spring
+
+server:
+  port: 8080
+
+# Configurações do Camunda Zeebe
+zeebe:
+  client:
+    cloud:
+      region: bru-2
+    broker:
+      gateway-address: 127.0.0.1:26500
+    security:
+      plaintext: true
+
+# Configurações da API de Cotação
+currency:
+  api:
+    url: https://economia.awesomeapi.com.br/last/USD-BRL
+    timeout: 10000
+
+logging:
+  level:
+    io.camunda: INFO
+    com.example: DEBUG
