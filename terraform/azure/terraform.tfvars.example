@@ -1,0 +1,26 @@
+# Azure Configuration
+location            = "East US"
+resource_group_name = "rg-poc-camunda-spring"
+project_name        = "poc-camunda-spring"
+
+# Container Registry (must be globally unique, alphanumeric only)
+acr_name = "acrpoccamunda12345"
+
+# App Service (must be globally unique)
+app_service_name       = "app-poc-camunda-spring-12345"
+app_service_plan_sku   = "B1"
+app_service_always_on  = false
+
+# Environment
+environment = "dev"
+
+# Camunda Configuration
+zeebe_gateway_address = "zeebe.example.com:26500"
+
+# Tags
+tags = {
+  Project     = "poc-camunda-spring"
+  Environment = "dev"
+  ManagedBy   = "Terraform"
+  Team        = "DevOps"
+}

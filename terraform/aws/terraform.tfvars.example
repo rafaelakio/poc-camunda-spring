@@ -1,0 +1,20 @@
+# AWS Configuration
+aws_region   = "us-east-1"
+project_name = "poc-camunda-spring"
+environment  = "dev"
+
+# ECS Configuration
+task_cpu       = "512"
+task_memory    = "1024"
+desired_count  = 1
+
+# Camunda Configuration
+zeebe_gateway_address = "zeebe.example.com:26500"
+
+# Tags
+tags = {
+  Project     = "poc-camunda-spring"
+  Environment = "dev"
+  ManagedBy   = "Terraform"
+  Team        = "DevOps"
+}
