@@ -155,9 +155,11 @@ npm run dev -- -p 3001
 Se você ainda tiver dúvidas:
 
 - 📖 [Documentação Completa](../README.md)
-- 🐛 [Reportar Bug](https://github.com/username/poc-camunda-spring/issues/new)
-- 💡 [Sugestão](https://github.com/username/poc-camunda-spring/issues/new)
-- 📧 Email: contato@exemplo.com
+- 🐛 [Reportar Bug](https://github.com/rafaelakio/poc-camunda-spring/issues/new)
+- 💡 [Sugestão](https://github.com/rafaelakio/poc-camunda-spring/issues/new)
+- 📧 Email: rafaelakio@github.com
+- 💬 [Discord Community](https://discord.gg/camunda-spring)
+- 📱 [LinkedIn](https://linkedin.com/in/rafaelakio)
 
 ## 🔄 Atualizações
 
